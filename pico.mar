@@ -1,0 +1,14 @@
+`pico_init(1)`
+defer {
+    `pico_init(0)`
+}
+
+data XY: [Int,Int]
+
+func pico_mar_get_size_internal: () -> XY {
+    return(`pico_get_size_internal()`)
+}
+
+func pico_mar_pct_to_pos: (pt: XY) -> XY {
+    return(`pico_pct_to_pos(pt)`)
+}
