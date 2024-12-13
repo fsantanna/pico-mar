@@ -1,4 +1,4 @@
-include(pico)
+^include(pico/pico.mar)
 
 ;; TITLE
 `pico_set_title("pico-mar")`
