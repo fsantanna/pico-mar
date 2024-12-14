@@ -5,12 +5,51 @@ defer {
     `pico_init(0)`
 }
 
-data XY: [Int,Int]
+data XY:      [Int,Int]
+data Color:   [U8,U8,U8,U8]
+data HAnchor: <Left:(),   Center:(), Right:()>
+data VAnchor: <Bottom:(), Middle:(), Top:()>
 
-func pico_mar_get_size_internal: () -> XY {
+;; STATE
+
+;; GET
+
+func pm_get_size_internal: () -> XY {
     return(`pico_get_size_internal()`)
 }
 
-func pico_mar_pct_to_pos: (pt: XY) -> XY {
-    return(`pico_pct_to_pos(pt)`)
+;; SET
+
+func pm_set_anchor: (h: HAnchor, v: VAnchor) -> () {
+    `pico_set_anchor(h.tag, v.tag)`
+}
+
+func pm_set_color_clear: (color: Color) -> () {
+    `pico_set_color_clear(MAR_CAST(SDL_Color,color))`
+}
+
+func pm_set_title: (title: \Char) -> () {
+    `pico_set_title(title)`
+}
+
+;; INPUT
+
+func pm_input_delay: (ms: Int) -> () {
+    `pico_input_delay(ms)`
+}
+
+;; OUTPUT
+
+func pm_output_clear: () -> () {
+    `pico_output_clear()`
+}
+
+func pm_output_present: () -> () {
+    `pico_output_present()`
+}
+
+;; AUX
+
+func pm_pct_to_pos: (x: Float, y: Float) -> XY {
+    return(`pico_pct_to_pos(x,y)`)
 }

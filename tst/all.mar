@@ -1,168 +1,168 @@
-^include(pico/pico.mar)
+^include(@/pico/pico.mar)
 
 ;; TITLE
-`pico_set_title("pico-mar")`
+pm_set_title("pico-mar")
 
 ;; SOUND
-`pico_output_sound("start.wav")`
+;;`pm_output_sound("start.wav")`
 
 ;; GET-SIZE
-var log = pico_mar_get_size_internal()
+var log = pm_get_size_internal()
 print(log)
 
-var cnt = pico_mar_pct_to_pos(XY [0.5,0.5])
+var cnt = pm_pct_to_pos(0.5, 0.5)
 print(cnt)
 
-;;;
 ;; CLEAR
-`pico_set_color_clear`([255,255,255,255])
-`pico_output_clear()`
-`pico_output_present()`
+pm_set_color_clear(Color [255,255,255,255])
+pm_output_clear()
+pm_output_present()
 
-`pico_input_delay`(2000)
+pm_input_delay(2000)
 
 ;; DRAW-IMAGE
-pico.set.anchor(:HAnchor-Center, :VAnchor-Middle)
-pico.output.draw.image(cnt, "open.png")
-pico.output.present()
+pm_set_anchor(HAnchor.Center(), VAnchor.Middle())
+;;;
+pm_output.draw.image(cnt, "open.png")
+pm_output.present()
 
-pico.input.delay(2000)
+pm_input.delay(2000)
 
 ;; CROP-IMAGE
-pico.set.image.crop([[0,0],[24,24]])
-pico.set.image.size([24,24])
-pico.output.draw.image(cnt, "open.png")
-pico.output.present()
+pm_set.image.crop([[0,0],[24,24]])
+pm_set.image.size([24,24])
+pm_output.draw.image(cnt, "open.png")
+pm_output.present()
 
-pico.input.delay(2000)
+pm_input.delay(2000)
 
 ;; DRAW-PIXEL
-pico.set.color.clear([0,0,0,255])
-pico.set.color.draw([255,255,255,255])
-pico.output.draw.pixel(cnt)
-pico.output.present()
+pm_set.color.clear([0,0,0,255])
+pm_set.color.draw([255,255,255,255])
+pm_output.draw.pixel(cnt)
+pm_output.present()
 
-pico.input.delay(2000)
+pm_input.delay(2000)
 
 ;; DRAW-TEXT
-pico.set.font("tiny.ttf", 10)
-pico.output.draw.text(cnt, "Hello!")
-pico.output.present()
+pm_set.font("tiny.ttf", 10)
+pm_output.draw.text(cnt, "Hello!")
+pm_output.present()
 
-pico.input.delay(2000)
+pm_input.delay(2000)
 
 ;; SET-GRID
-pico.set.grid(false)
-pico.output.present()
+pm_set.grid(false)
+pm_output.present()
 
-pico.input.delay(2000)
+pm_input.delay(2000)
 
 ;; WRITE
-pico.set.cursor(pico.pct-to-pos(1/5,1/5))
-pico.output.write("1 ")
-pico.output.write("2 ")
-pico.output.writeln("3")
-pico.output.writeln("")
-pico.output.writeln("pico")
-pico.output.present()
+pm_set.cursor(pm_pct-to-pos(1/5,1/5))
+pm_output.write("1 ")
+pm_output.write("2 ")
+pm_output.writeln("3")
+pm_output.writeln("")
+pm_output.writeln("pico")
+pm_output.present()
 
-pico.input.delay(2000)
+pm_input.delay(2000)
 
 ;; SET-FONT
-pico.set.font("tiny.ttf", 5)
-pico.output.writeln("pico")
-pico.output.present()
+pm_set.font("tiny.ttf", 5)
+pm_output.writeln("pico")
+pm_output.present()
 
-pico.input.delay(2000)
+pm_input.delay(2000)
 
 ;; MOUSE
-val e :Pico.Mouse.Button = pico.input.event(:Pico.Mouse.Button.Dn)
-pico.output.draw.pixel([e.pos.x,e.pos.y])
-pico.output.present()
+val e :Pico.Mouse.Button = pm_input.event(:Pico.Mouse.Button.Dn)
+pm_output.draw.pixel([e.pos.x,e.pos.y])
+pm_output.present()
 
-pico.input.delay(2000)
+pm_input.delay(2000)
 
 ;; SET-GRID
-pico.set.grid(true)
+pm_set.grid(true)
 
 ;; DRAW-LINE
-pico.output.draw.line(pico.pct-to-pos(0,1), pico.pct-to-pos(1,0))
-pico.output.draw.line(pico.pct-to-pos(0,0), pico.pct-to-pos(1,1))
+pm_output.draw.line(pm_pct-to-pos(0,1), pm_pct-to-pos(1,0))
+pm_output.draw.line(pm_pct-to-pos(0,0), pm_pct-to-pos(1,1))
 
 ;; DRAW-RECT
-pico.output.draw.rect([cnt,[21,21]])
+pm_output.draw.rect([cnt,[21,21]])
 
 ;; DRAW-OVAL
-pico.output.draw.oval([pico.pct-to-pos(2/3,1/2),[6,6]])
+pm_output.draw.oval([pm_pct-to-pos(2/3,1/2),[6,6]])
 
 ;; SET-ANCHOR
-pico.set.anchor(:HAnchor-Right, :VAnchor-Top)
-pico.output.draw.rect([pico.pct-to-pos(1,0),[5,5]])
+pm_set.anchor(:HAnchor-Right, :VAnchor-Top)
+pm_output.draw.rect([pm_pct-to-pos(1,0),[5,5]])
 
-pico.output.present()
-pico.input.delay(2000)
+pm_output.present()
+pm_input.delay(2000)
 
 ;; SET-ZOOM
 
-pico.set.size(:internal, [log.x*0.9,log.y*0.9])
-pico.output.draw.pixel(pico.pct-to-pos(1/2,1/2))
-pico.output.present()
-pico.input.delay(500)
+pm_set.size(:internal, [log.x*0.9,log.y*0.9])
+pm_output.draw.pixel(pm_pct-to-pos(1/2,1/2))
+pm_output.present()
+pm_input.delay(500)
 
-pico.set.size(:internal, [log.x*0.8,log.y*0.8])
-pico.output.draw.pixel(pico.pct-to-pos(1/2,1/2))
-pico.output.present()
-pico.input.delay(500)
+pm_set.size(:internal, [log.x*0.8,log.y*0.8])
+pm_output.draw.pixel(pm_pct-to-pos(1/2,1/2))
+pm_output.present()
+pm_input.delay(500)
 
-pico.set.size(:internal, [log.x*0.7,log.y*0.7])
-pico.output.draw.pixel(pico.pct-to-pos(1/2,1/2))
-pico.output.present()
-pico.input.delay(500)
+pm_set.size(:internal, [log.x*0.7,log.y*0.7])
+pm_output.draw.pixel(pm_pct-to-pos(1/2,1/2))
+pm_output.present()
+pm_input.delay(500)
 
-pico.set.size(:internal, [log.x*0.6,log.y*0.6])
-pico.output.draw.pixel(pico.pct-to-pos(1/2,1/2))
-pico.output.present()
-pico.input.delay(500)
+pm_set.size(:internal, [log.x*0.6,log.y*0.6])
+pm_output.draw.pixel(pm_pct-to-pos(1/2,1/2))
+pm_output.present()
+pm_input.delay(500)
 
-pico.set.size(:internal, [log.x*0.5,log.y*0.5])
-pico.output.draw.pixel(pico.pct-to-pos(1/2,1/2))
-pico.output.present()
-pico.input.delay(500)
+pm_set.size(:internal, [log.x*0.5,log.y*0.5])
+pm_output.draw.pixel(pm_pct-to-pos(1/2,1/2))
+pm_output.present()
+pm_input.delay(500)
 
 ;; SET-PAN
 
-val pos = pico.pct-to-pos(1/2,1/2)
+val pos = pm_pct-to-pos(1/2,1/2)
 
-pico.set.pan([0,0])
-pico.output.draw.pixel(pos)
-pico.output.present()
-pico.input.delay(500)
+pm_set.pan([0,0])
+pm_output.draw.pixel(pos)
+pm_output.present()
+pm_input.delay(500)
 
-pico.set.pan([5,5])
-pico.output.draw.pixel(pos)
-pico.output.present()
-pico.input.delay(500)
+pm_set.pan([5,5])
+pm_output.draw.pixel(pos)
+pm_output.present()
+pm_input.delay(500)
 
-pico.set.pan([10,10])
-pico.output.draw.pixel(pos)
-pico.output.present()
-pico.input.delay(500)
+pm_set.pan([10,10])
+pm_output.draw.pixel(pos)
+pm_output.present()
+pm_input.delay(500)
 
-pico.set.pan([5,5])
-pico.output.draw.pixel(pos)
-pico.output.present()
-pico.input.delay(500)
+pm_set.pan([5,5])
+pm_output.draw.pixel(pos)
+pm_output.present()
+pm_input.delay(500)
 
-pico.set.pan([0,0])
-pico.output.draw.pixel(pos)
-pico.output.present()
-pico.input.delay(500)
+pm_set.pan([0,0])
+pm_output.draw.pixel(pos)
+pm_output.present()
+pm_input.delay(500)
 
-pico.input.delay(2000)
+pm_input.delay(2000)
 
-pico.set.size(:internal, [64,36])
-pico.output.draw.pixel(pico.pct-to-pos(1/2,1/2))
-pico.output.present()
+pm_set.size(:internal, [64,36])
+pm_output.draw.pixel(pm_pct-to-pos(1/2,1/2))
+pm_output.present()
 
-pico.input.delay(2000)
+pm_input.delay(2000)
 ;;;
