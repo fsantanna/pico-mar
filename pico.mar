@@ -5,8 +5,10 @@ defer {
     `pico_init(0)`
 }
 
-data XY:      [Int,Int]
-data Color:   [U8,U8,U8,U8]
+data XY:      [x:Int, y:Int]
+data WH:      [w:Int, h:Int]
+data Rect:    [pos:XY, dim:Int]
+data Color:   [r:U8, g:U8, b:U8, a:U8]
 data HAnchor: <Left:(),   Center:(), Right:()>
 data VAnchor: <Bottom:(), Middle:(), Top:()>
 
@@ -14,7 +16,7 @@ data VAnchor: <Bottom:(), Middle:(), Top:()>
 
 ;; GET
 
-func pm_get_size_internal: () -> XY {
+func pm_get_size_internal: () -> WH {
     return(`pico_get_size_internal()`)
 }
 
@@ -26,6 +28,18 @@ func pm_set_anchor: (h: HAnchor, v: VAnchor) -> () {
 
 func pm_set_color_clear: (color: Color) -> () {
     `pico_set_color_clear(MAR_CAST(SDL_Color,color))`
+}
+
+func pm_set_color_draw: (color: Color) -> () {
+    `pico_set_color_draw(MAR_CAST(SDL_Color,color))`
+}
+
+func pm_set_image_crop: (crop: Rect) -> () {
+    `pico_set_image_crop(MAR_CAST(SDL_Rect,crop))`
+}
+
+func pm_set_image_size: (size: WH) -> () {
+    `pico_set_image_size(MAR_CAST(SDL_Point,size))`
 }
 
 func pm_set_title: (title: \Char) -> () {
@@ -42,6 +56,14 @@ func pm_input_delay: (ms: Int) -> () {
 
 func pm_output_clear: () -> () {
     `pico_output_clear()`
+}
+
+func pm_output_draw_image: (pos: XY, path: \Char) -> () {
+    `pico_output_draw_image(MAR_CAST(SDL_Point,pos), path)`
+}
+
+func pm_output_draw_pixel: (pos: XY) -> () {
+    `pico_output_draw_pixel(MAR_CAST(SDL_Point,pos))`
 }
 
 func pm_output_present: () -> () {

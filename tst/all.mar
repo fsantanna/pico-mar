@@ -22,27 +22,27 @@ pm_input_delay(2000)
 
 ;; DRAW-IMAGE
 pm_set_anchor(HAnchor.Center(), VAnchor.Middle())
-;;;
-pm_output.draw.image(cnt, "open.png")
-pm_output.present()
+pm_output_draw_image(cnt, "open.png")
+pm_output_present()
 
-pm_input.delay(2000)
+pm_input_delay(2000)
 
 ;; CROP-IMAGE
-pm_set.image.crop([[0,0],[24,24]])
-pm_set.image.size([24,24])
-pm_output.draw.image(cnt, "open.png")
-pm_output.present()
+;;;
+pm_set_image_crop([[0,0],[24,24]])
+pm_set_image_size([24,24])
+pm_output_draw_image(cnt, "open.png")
+pm_output_present()
 
-pm_input.delay(2000)
+pm_input_delay(2000)
 
 ;; DRAW-PIXEL
-pm_set.color.clear([0,0,0,255])
-pm_set.color.draw([255,255,255,255])
-pm_output.draw.pixel(cnt)
-pm_output.present()
+pm_set_color_clear([0,0,0,255])
+pm_set_color_draw([255,255,255,255])
+pm_output_draw_pixel(cnt)
+pm_output_present()
 
-pm_input.delay(2000)
+pm_input_delay(2000)
 
 ;; DRAW-TEXT
 pm_set.font("tiny.ttf", 10)
