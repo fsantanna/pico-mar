@@ -79,7 +79,7 @@ func pm_set_title: (title: \Char) -> () {
 ;; INPUT
 
 func pm_input_sdl_to_mar: (sdl: `SDL_Event`) -> PM {
-    return(match sdl {
+    var ret = match sdl {
         `SDL_QUIT` =>
             PM.Quit []
         `SDL_MOUSEMOTION` =>
@@ -89,27 +89,20 @@ func pm_input_sdl_to_mar: (sdl: `SDL_Event`) -> PM {
         `SDL_MOUSEBUTTONDOWN` =>
             PM.Mouse.Button.Dn [
                 XY [`evt->button.x`, `evt->button.y`],
-                tag-c-to-ceu (
-                    `:tag evt->button.button`,
-                    `:tag SDL_BUTTON_LEFT`,
-                    :Mouse-Button-Left
-                )
+                `SDL_BUTTON_LEFT`
             ]
         `SDL_MOUSEBUTTONUP` =>
             PM.Mouse.Button.Up [
                 XY [`evt->button.x`, `evt->button.y`],
-                tag-c-to-ceu (
-                    `:tag evt->button.button`,
-                    `:tag SDL_BUTTON_LEFT`,
-                    :Mouse-Button-Left
-                )
+                `SDL_BUTTON_LEFT`
             ]
         `SDL_KEYDOWN` =>
-            :PM.Key.Dn [keys-c-to-ceu(`:tag evt->key.keysym.sym`)]
+            PM.Key.Dn [`evt->key.keysym.sym`]
         `SDL_KEYUP` =>
-            :PM.Key.Up [keys-c-to-ceu(`:tag evt->key.keysym.sym`)]
-        else => error(:error)
-    })
+            PM.Key.Up [`evt->key.keysym.sym`]
+        else => throw()
+    }
+    return(ret)
 }
 
 func pm_input_delay: (ms: Int) -> () {
