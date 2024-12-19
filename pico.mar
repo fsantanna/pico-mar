@@ -7,10 +7,28 @@ defer {
 
 data XY:      [x:Int, y:Int]
 data WH:      [w:Int, h:Int]
-data Rect:    [pos:XY, dim:Int]
+data Rect:    [pos:XY, dim:WH]
 data Color:   [r:U8, g:U8, b:U8, a:U8]
 data HAnchor: <Left:(),   Center:(), Right:()>
 data VAnchor: <Bottom:(), Middle:(), Top:()>
+
+data PM.*: [] {
+    Any   : []
+    Quit  : []
+    Frame : [ms: Int]
+    Draw  : []
+    Key : [key: Int] {
+        Dn : []
+        Up : []
+    }
+    Mouse : [pos: XY] {
+        Motion : []
+        Button : [but: Int] {
+            Dn : []
+            Up : []
+        }
+    }
+}
 
 ;; STATE
 
@@ -34,6 +52,18 @@ func pm_set_color_draw: (color: Color) -> () {
     `pico_set_color_draw(MAR_CAST(SDL_Color,color))`
 }
 
+func pm_set_cursor: (pos: XY) -> () {
+    `pico_set_cursor(MAR_CAST(SDL_Point,pos))`
+}
+
+func pm_set_font: (file: \Char, h: Int) -> () {
+    `pico_set_font (file, h)`
+}
+
+func pm_set_grid: (on: Bool) -> () {
+    `pico_set_grid(on)`
+}
+
 func pm_set_image_crop: (crop: Rect) -> () {
     `pico_set_image_crop(MAR_CAST(SDL_Rect,crop))`
 }
@@ -48,8 +78,50 @@ func pm_set_title: (title: \Char) -> () {
 
 ;; INPUT
 
+func pm_input_sdl_to_mar: (sdl: `SDL_Event`) -> PM {
+    return(match sdl {
+        `SDL_QUIT` =>
+            PM.Quit []
+        `SDL_MOUSEMOTION` =>
+            PM.Mouse.Motion [
+                XY [`evt->TODO.x`, `evt->TODO.y`]
+            ]
+        `SDL_MOUSEBUTTONDOWN` =>
+            PM.Mouse.Button.Dn [
+                XY [`evt->button.x`, `evt->button.y`],
+                tag-c-to-ceu (
+                    `:tag evt->button.button`,
+                    `:tag SDL_BUTTON_LEFT`,
+                    :Mouse-Button-Left
+                )
+            ]
+        `SDL_MOUSEBUTTONUP` =>
+            PM.Mouse.Button.Up [
+                XY [`evt->button.x`, `evt->button.y`],
+                tag-c-to-ceu (
+                    `:tag evt->button.button`,
+                    `:tag SDL_BUTTON_LEFT`,
+                    :Mouse-Button-Left
+                )
+            ]
+        `SDL_KEYDOWN` =>
+            :PM.Key.Dn [keys-c-to-ceu(`:tag evt->key.keysym.sym`)]
+        `SDL_KEYUP` =>
+            :PM.Key.Up [keys-c-to-ceu(`:tag evt->key.keysym.sym`)]
+        else => error(:error)
+    })
+}
+
 func pm_input_delay: (ms: Int) -> () {
     `pico_input_delay(ms)`
+}
+
+func pm_input_event: (type: Int) -> PM {
+    ```
+    SDL_Event sdl;
+    pico_input_event(&sdl, type);
+    ```
+    pm_input_sdl_to_mar(`sdl`);
 }
 
 ;; OUTPUT
@@ -66,8 +138,20 @@ func pm_output_draw_pixel: (pos: XY) -> () {
     `pico_output_draw_pixel(MAR_CAST(SDL_Point,pos))`
 }
 
+func pm_output_draw_text: (pos: XY, text: \Char) -> () {
+    `pico_output_draw_text(MAR_CAST(SDL_Point,pos), text)`
+}
+
 func pm_output_present: () -> () {
     `pico_output_present()`
+}
+
+func pm_output_write: (text: \Char) -> () {
+    `pico_output_write(text)`
+}
+
+func pm_output_writeln: (text: \Char) -> () {
+    `pico_output_writeln(text)`
 }
 
 ;; AUX
