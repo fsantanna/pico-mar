@@ -78,28 +78,28 @@ func pm_set_title: (title: \Char) -> () {
 
 ;; INPUT
 
-func pm_input_sdl_to_mar: (sdl: `SDL_Event`) -> PM {
-    var ret = match sdl {
+func pm_input_sdl_to_mar: (sdl: `SDL_Event*`) -> PM {
+    var ret: PM = match `sdl->type` {
         `SDL_QUIT` =>
             PM.Quit []
         `SDL_MOUSEMOTION` =>
             PM.Mouse.Motion [
-                XY [`evt->TODO.x`, `evt->TODO.y`]
+                XY [`sdl->motion.x`, `sdl->motion.y`]
             ]
         `SDL_MOUSEBUTTONDOWN` =>
             PM.Mouse.Button.Dn [
-                XY [`evt->button.x`, `evt->button.y`],
+                XY [`sdl->button.x`, `sdl->button.y`],
                 `SDL_BUTTON_LEFT`
             ]
         `SDL_MOUSEBUTTONUP` =>
             PM.Mouse.Button.Up [
-                XY [`evt->button.x`, `evt->button.y`],
+                XY [`sdl->button.x`, `sdl->button.y`],
                 `SDL_BUTTON_LEFT`
             ]
         `SDL_KEYDOWN` =>
-            PM.Key.Dn [`evt->key.keysym.sym`]
+            PM.Key.Dn [`sdl->key.keysym.sym`]
         `SDL_KEYUP` =>
-            PM.Key.Up [`evt->key.keysym.sym`]
+            PM.Key.Up [`sdl->key.keysym.sym`]
         else => throw()
     }
     return(ret)
@@ -114,7 +114,7 @@ func pm_input_event: (type: Int) -> PM {
     SDL_Event sdl;
     pico_input_event(&sdl, type);
     ```
-    pm_input_sdl_to_mar(`sdl`);
+    return(pm_input_sdl_to_mar(`&sdl`));
 }
 
 ;; OUTPUT
@@ -127,8 +127,20 @@ func pm_output_draw_image: (pos: XY, path: \Char) -> () {
     `pico_output_draw_image(MAR_CAST(SDL_Point,pos), path)`
 }
 
+func pm_output_draw_line: (p1: XY, p2: XY) -> () {
+    `pico_output_draw_line(MAR_CAST(SDL_Point,p1), MAR_CAST(SDL_Point,p2))`
+}
+
+func pm_output_draw_oval: (rect: Rect) -> () {
+    `pico_output_draw_oval(MAR_CAST(SDL_Rect,rect))`
+}
+
 func pm_output_draw_pixel: (pos: XY) -> () {
     `pico_output_draw_pixel(MAR_CAST(SDL_Point,pos))`
+}
+
+func pm_output_draw_rect: (rect: Rect) -> () {
+    `pico_output_draw_rect(MAR_CAST(SDL_Rect,rect))`
 }
 
 func pm_output_draw_text: (pos: XY, text: \Char) -> () {

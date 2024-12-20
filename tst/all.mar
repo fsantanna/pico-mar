@@ -70,8 +70,6 @@ pm_output_present()
 
 pm_input_delay(2000)
 
-;;;
-
 ;; SET-FONT
 pm_set_font("tiny.ttf", 5)
 pm_output_writeln("pico")
@@ -87,26 +85,28 @@ pm_output_present()
 pm_input_delay(2000)
 
 ;;;
+
 ;; SET-GRID
-pm_set.grid(true)
+pm_set_grid(true)
 
 ;; DRAW-LINE
-pm_output.draw.line(pm_pct-to-pos(0,1), pm_pct-to-pos(1,0))
-pm_output.draw.line(pm_pct-to-pos(0,0), pm_pct-to-pos(1,1))
+pm_output_draw_line(pm_pct_to_pos(0,1), pm_pct_to_pos(1,0))
+pm_output_draw_line(pm_pct_to_pos(0,0), pm_pct_to_pos(1,1))
 
 ;; DRAW-RECT
-pm_output.draw.rect([cnt,[21,21]])
+pm_output_draw_rect(Rect [cnt, WH [21,21]])
 
 ;; DRAW-OVAL
-pm_output.draw.oval([pm_pct-to-pos(2/3,1/2),[6,6]])
+pm_output_draw_oval(Rect [pm_pct_to_pos(2/3,1/2), WH [6,6]])
 
 ;; SET-ANCHOR
-pm_set.anchor(:HAnchor-Right, :VAnchor-Top)
-pm_output.draw.rect([pm_pct-to-pos(1,0),[5,5]])
+pm_set_anchor(HAnchor.Right(), VAnchor.Top())
+pm_output_draw_rect(Rect [pm_pct_to_pos(1,0), WH [5,5]])
 
-pm_output.present()
-pm_input.delay(2000)
+pm_output_present()
+pm_input_delay(2000)
 
+;;;
 ;; SET-ZOOM
 
 pm_set.size(:internal, [log.x*0.9,log.y*0.9])
