@@ -72,6 +72,14 @@ func pm_set_image_size: (size: WH) -> () {
     `pico_set_image_size(MAR_CAST(SDL_Point,size))`
 }
 
+func pm_set_pan: (pos: XY) -> () {
+    `pico_set_pan(MAR_CAST(SDL_Point,pos))`
+}
+
+func pm_set_size_internal: (log: WH) -> () {
+    `pico_set_size_internal(MAR_CAST(SDL_Point,log))`
+}
+
 func pm_set_title: (title: \Char) -> () {
     `pico_set_title(title)`
 }

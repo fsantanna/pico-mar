@@ -10,10 +10,8 @@ pm_set_title("pico-mar")
 var log = pm_get_size_internal()
 print(log)
 
-var cnt = pm_pct_to_pos(0.5, 0.5)
+var cnt = pm_pct_to_pos(1.0/2,1.0/2)
 print(cnt)
-
-;;;
 
 ;; CLEAR
 pm_set_color_clear(Color [255,255,255,255])
@@ -84,8 +82,6 @@ pm_output_present()
 
 pm_input_delay(2000)
 
-;;;
-
 ;; SET-GRID
 pm_set_grid(true)
 
@@ -97,7 +93,7 @@ pm_output_draw_line(pm_pct_to_pos(0,0), pm_pct_to_pos(1,1))
 pm_output_draw_rect(Rect [cnt, WH [21,21]])
 
 ;; DRAW-OVAL
-pm_output_draw_oval(Rect [pm_pct_to_pos(2/3,1/2), WH [6,6]])
+pm_output_draw_oval(Rect [pm_pct_to_pos(2.0/3,1.0/2), WH [6,6]])
 
 ;; SET-ANCHOR
 pm_set_anchor(HAnchor.Right(), VAnchor.Top())
@@ -106,68 +102,66 @@ pm_output_draw_rect(Rect [pm_pct_to_pos(1,0), WH [5,5]])
 pm_output_present()
 pm_input_delay(2000)
 
-;;;
 ;; SET-ZOOM
 
-pm_set.size(:internal, [log.x*0.9,log.y*0.9])
-pm_output.draw.pixel(pm_pct-to-pos(1/2,1/2))
-pm_output.present()
-pm_input.delay(500)
+pm_set_size_internal(WH [log.w*0.9,log.h*0.9])
+pm_output_draw_pixel(pm_pct_to_pos(1.0/2,1.0/2))
+pm_output_present()
+pm_input_delay(500)
 
-pm_set.size(:internal, [log.x*0.8,log.y*0.8])
-pm_output.draw.pixel(pm_pct-to-pos(1/2,1/2))
-pm_output.present()
-pm_input.delay(500)
+pm_set_size_internal(WH [log.w*0.8,log.h*0.8])
+pm_output_draw_pixel(pm_pct_to_pos(1.0/2,1.0/2))
+pm_output_present()
+pm_input_delay(500)
 
-pm_set.size(:internal, [log.x*0.7,log.y*0.7])
-pm_output.draw.pixel(pm_pct-to-pos(1/2,1/2))
-pm_output.present()
-pm_input.delay(500)
+pm_set_size_internal(WH [log.w*0.7,log.h*0.7])
+pm_output_draw_pixel(pm_pct_to_pos(1.0/2,1.0/2))
+pm_output_present()
+pm_input_delay(500)
 
-pm_set.size(:internal, [log.x*0.6,log.y*0.6])
-pm_output.draw.pixel(pm_pct-to-pos(1/2,1/2))
-pm_output.present()
-pm_input.delay(500)
+pm_set_size_internal(WH [log.w*0.6,log.h*0.6])
+pm_output_draw_pixel(pm_pct_to_pos(1.0/2,1.0/2))
+pm_output_present()
+pm_input_delay(500)
 
-pm_set.size(:internal, [log.x*0.5,log.y*0.5])
-pm_output.draw.pixel(pm_pct-to-pos(1/2,1/2))
-pm_output.present()
-pm_input.delay(500)
+pm_set_size_internal(WH [log.w*0.5,log.h*0.5])
+pm_output_draw_pixel(pm_pct_to_pos(1.0/2,1.0/2))
+pm_output_present()
+pm_input_delay(500)
 
 ;; SET-PAN
 
-val pos = pm_pct-to-pos(1/2,1/2)
+var pos = pm_pct_to_pos(1.0/2,1.0/2)
 
-pm_set.pan([0,0])
-pm_output.draw.pixel(pos)
-pm_output.present()
-pm_input.delay(500)
+pm_set_pan(XY [0,0])
+pm_output_draw_pixel(pos)
+pm_output_present()
+pm_input_delay(500)
 
-pm_set.pan([5,5])
-pm_output.draw.pixel(pos)
-pm_output.present()
-pm_input.delay(500)
+pm_set_pan(XY [5,5])
+pm_output_draw_pixel(pos)
+pm_output_present()
+pm_input_delay(500)
 
-pm_set.pan([10,10])
-pm_output.draw.pixel(pos)
-pm_output.present()
-pm_input.delay(500)
+pm_set_pan(XY [10,10])
+pm_output_draw_pixel(pos)
+pm_output_present()
+pm_input_delay(500)
 
-pm_set.pan([5,5])
-pm_output.draw.pixel(pos)
-pm_output.present()
-pm_input.delay(500)
+pm_set_pan(XY [5,5])
+pm_output_draw_pixel(pos)
+pm_output_present()
+pm_input_delay(500)
 
-pm_set.pan([0,0])
-pm_output.draw.pixel(pos)
-pm_output.present()
-pm_input.delay(500)
+pm_set_pan(XY [0,0])
+pm_output_draw_pixel(pos)
+pm_output_present()
+pm_input_delay(500)
 
-pm_input.delay(2000)
+pm_input_delay(2000)
 
-pm_set.size(:internal, [64,36])
-pm_output.draw.pixel(pm_pct-to-pos(1/2,1/2))
-pm_output.present()
+pm_set_size_internal(WH [64,36])
+pm_output_draw_pixel(pm_pct_to_pos(1.0/2,1.0/2))
+pm_output_present()
 
-pm_input.delay(2000)
-;;;
+pm_input_delay(2000)
