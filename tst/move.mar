@@ -1,0 +1,23 @@
+^include(@/pico/pico.mar)
+
+pm_set_title("pico-Mar: Moving Around")
+
+var pos = pm_pct_to_pos(0.5,0.5)
+
+loop {
+    pm_set_color_draw(Color [255,255,255,255])
+    pm_output_draw_pixel(pos)
+    pm_output_present()
+
+    var e: PM.Key.Dn = pm_input_event(`SDL_KEYDOWN`)!Key!Dn
+    pm_set_color_draw(Color [0,0,0,255])
+    pm_output_draw_pixel(pos)
+
+    match e.key {
+        `SDLK_LEFT`   { set pos.x = pos.x - 1 }
+        `SDLK_RIGHT`  { set pos.x = pos.x + 1 }
+        `SDLK_UP`     { set pos.y = pos.y - 1 }
+        `SDLK_DOWN`   { set pos.y = pos.y + 1 }
+        `SDLK_ESCAPE` { break                 }
+    }
+}
