@@ -1,0 +1,20 @@
+^include(@/pico/pico.mar)
+
+pm_set_title("pico-Mar: Mouse")
+
+;; TODO: invalid after double buffering
+
+loop {
+    var e: PM.Mouse.Button.Dn = pm_input_event(`SDL_MOUSEBUTTONDOWN`)!Mouse!Button!Dn
+    match e.but {
+        `SDL_BUTTON_LEFT` {
+            pm_set_color_draw(Color [255,255,255,255])
+            pm_output_draw_pixel(e.pos)
+        }
+        `SDL_BUTTON_RIGHT` {
+            pm_set_color_draw(Color [0,0,0,255])
+            pm_output_draw_pixel(e.pos)
+        }
+    }
+    pm_output_present()
+}

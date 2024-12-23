@@ -97,12 +97,12 @@ func pm_input_sdl_to_mar: (sdl: `SDL_Event*`) -> PM {
         `SDL_MOUSEBUTTONDOWN` =>
             PM.Mouse.Button.Dn [
                 XY [`sdl->button.x`, `sdl->button.y`],
-                `SDL_BUTTON_LEFT`
+                `sdl->button.button`
             ]
         `SDL_MOUSEBUTTONUP` =>
             PM.Mouse.Button.Up [
                 XY [`sdl->button.x`, `sdl->button.y`],
-                `SDL_BUTTON_LEFT`
+                `sdl->button.button`
             ]
         `SDL_KEYDOWN` =>
             PM.Key.Dn [`sdl->key.keysym.sym`]
