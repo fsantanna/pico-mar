@@ -1,0 +1,25 @@
+^include(@/pico/pico.mar)
+
+pm_set_title("pico-Ceu: Across")
+
+;;;
+func dist (pt1:XY, pt2:XY) {
+    ((pt2.x-pt1.x)**2 + (pt2.y-pt1.y)**2) ** 0.5
+}
+;;;
+
+var pt1: XY = pm_pct_to_pos(0,0)
+var pt2: XY = pm_pct_to_pos(1,1)
+
+var dy: Float = (pt2.y - pt1.y) / (pt2.x - pt1.x)
+
+var i = pt1.x
+loop {
+    pm_output_draw_pixel(XY [i,i*dy])
+    pm_output_present()
+    pm_input_delay(100)
+    if i == pt2.x {
+        break
+    }
+    set i = i + 1
+}
