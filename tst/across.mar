@@ -13,13 +13,9 @@ var pt2: XY = pm_pct_to_pos(1,1)
 
 var dy: Float = (pt2.y - pt1.y) / (pt2.x - pt1.x)
 
-var i = pt1.x
-loop {
-    pm_output_draw_pixel(XY [i,i*dy])
+loop i in (pt2.x - pt1.x) {
+    var ii = pt1.x + i
+    pm_output_draw_pixel(XY [ii,ii*dy])
     pm_output_present()
     pm_input_delay(100)
-    if i == pt2.x {
-        break
-    }
-    set i = i + 1
 }
