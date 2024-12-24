@@ -76,6 +76,14 @@ func pm_set_pan: (pos: XY) -> () {
     `pico_set_pan(MAR_CAST(SDL_Point,pos))`
 }
 
+func pm_set_size: (size: WH) -> () {
+    `pico_set_size(MAR_CAST(SDL_Point,size))`
+}
+
+func pm_set_size_external: (phy: WH) -> () {
+    `pico_set_size_external(MAR_CAST(SDL_Point,phy))`
+}
+
 func pm_set_size_internal: (log: WH) -> () {
     `pico_set_size_internal(MAR_CAST(SDL_Point,log))`
 }
@@ -157,6 +165,10 @@ func pm_output_draw_text: (pos: XY, text: \Char) -> () {
 
 func pm_output_present: () -> () {
     `pico_output_present()`
+}
+
+func pm_output_sound: (path: \Char) -> () {
+    `pico_output_sound(path)`
 }
 
 func pm_output_write: (text: \Char) -> () {
