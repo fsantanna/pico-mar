@@ -1,0 +1,18 @@
+^["@/pico/pico.ceu"]
+^["@/pico/layout.ceu"]
+
+;;;
+val lay = [ [0,1] ]
+;;;
+
+val lay = [
+    [0,0,1],
+    [0,0,1],
+    [2,2,3],
+    [4,5,3],
+]
+
+val rs = lay -> layout-to-rects
+val t = spawn Grid(rs)
+
+pico.loop()

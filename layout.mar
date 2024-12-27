@@ -1,0 +1,106 @@
+^include(@/pico/pico.mar)
+
+data FXY:   [x:Float, y:Float]
+data FWH:   [w:Float, h:Float]
+data FRect: [pos:FXY, dim:FWH]
+
+func layout_to_rects: (lay: #[100*Int], dim: WH, parent: Rect) -> #[100*FRect] {
+    ensure((dim.w*dim.h) <= 100)
+    var rs1: #[100*Rect]
+    var n1 = 0
+    do {
+        loop l in dim.h {
+            loop c in dim.w {
+                if lay[(l*dim.h)+c] == n1 {
+                    var r = Rect [XY[c,l], WH[0,0]]
+                    loop xc in (dim.w-c) {
+                        var xxc = xc + c
+                        until(lay[(l*dim.h)+xxc] != n1)
+                        set r.dim.w = (xxc - c) + 1
+                    }
+                    loop xl in (dim.h-l) {
+                        var xxl = xl + l
+                        until(lay[(xl*dim.h)+c] != n1)
+                        set r.dim.h = (xl - l) + 1
+                    }
+                    set rs1[n1] = r
+                    set n1 = n1 + 1
+                }
+            }
+        }
+    }
+
+    var rs2: #[100*FRect]
+    do {
+        var n2 = 0
+        var rr = FRect [FXY[x,y], FWH[parent.dim.w,parent.dim.h]] where {
+            x = parent.pos.x-(parent.dim.w/2)
+            y = parent.pos.y-(parent.dim.h/2)
+        }
+print("rr")
+print(rr)
+        var p = FXY [rr.dim.w/dim.w, rr.dim.h/dim.h]
+        loop i in n1 {
+            var r = rs1[i]
+            set rs2[n2] = FRect [FXY[x,y], FWH[w,h]] where {
+                w = r.dim.w * p.x
+                h = r.dim.h * p.y
+                x = rr.pos.x + (r.pos.x * p.x) + (w/2)
+                y = rr.pos.y + (r.pos.y * p.y) + (h/2)
+            }
+            set n2 = n2 + 1
+        }
+    }
+    return(rs2)
+}
+
+func layout_draw: (rs: \#[Rect]) -> () {
+    pm_set_style(`PICO_STROKE`)
+    loop i in #rs\ {
+        pm_output_draw_rect(rs\[i])
+    }
+}
+
+test {
+    pm_set_font("tiny.ttf", 10)
+    do {
+        print("= 1 =")
+        var lay = #[
+            0, 1,
+        ]
+        var rs = layout_to_rects(lay, WH[2,1], Rect[XY[0,0],WH[2,1]])
+        ;;print(rs)
+        print("-=-=-")
+        loop i in 2 {
+            print(rs[i])
+        }
+        ensure(false)
+;;;
+        ensure(rs == #[
+            Rect [XY[0.5,0.5], WH[1,1]],
+            Rect [XY[1.5,0.5], WH[1,1]],
+        ])
+;;;
+    }
+    do {
+        print("= 2 =")
+        var lay = #[
+            0, 0, 1,
+            0, 0, 1,
+            2, 2, 3,
+            4, 5, 3,
+        ]
+        var rs = layout_to_rects(lay, WH[3,4], Rect[XY[0,0],WH[3,4]])
+        print(rs)
+;;;
+        ensure(rs == #[
+            Rect [XY[1.0,1.0], WH[2,2]],
+            Rect [XY[2.5,1.0], WH[1,2]],
+            Rect [XY[1.0,2.5], WH[2,1]],
+            Rect [XY[2.5,3.0], WH[1,2]],
+            Rect [XY[0.5,3.5], WH[1,1]],
+            Rect [XY[1.5,3.5], WH[1,1]]
+        ])
+;;;
+    }
+}

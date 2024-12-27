@@ -88,6 +88,10 @@ func pm_set_size_internal: (log: WH) -> () {
     `pico_set_size_internal(MAR_CAST(SDL_Point,log))`
 }
 
+func pm_set_style: (style: `Pico_Style`) -> () {
+    `pico_set_style(style)`
+}
+
 func pm_set_title: (title: \Char) -> () {
     `pico_set_title(title)`
 }
