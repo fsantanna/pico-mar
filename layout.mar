@@ -50,9 +50,9 @@ func layout_to_rects: (lay: #[15*Int], dim: WH, parent: Rect) -> #[15*Rect] {
     return(rs2)
 }
 
-func layout_draw: (rs: \#[Rect], dim: WH) -> () {
+func layout_draw: (rs: \#[Rect]) -> () {
     pm_set_style(`PICO_STROKE`)
-    loop i in (dim.w*dim.h) {
+    loop i in #rs\ {
         pm_output_draw_rect(rs\[i])
     }
 }
