@@ -1,7 +1,16 @@
 ^include(@/pico/layout.mar)
 
 ;;;
-val lay = [ [0,1] ]
+var lay = #[0,1]
+var rs = layout_to_rects(lay, WH[2,1], Rect [XY[0,0],pm_get_size_internal()])
+;;;
+
+;;;
+var lay = #[
+    0, 0, 1,
+    0, 0, 1,
+]
+var rs = layout_to_rects(lay, WH[3,2], Rect [XY[0,0],pm_get_size_internal()])
 ;;;
 
 var lay = #[
@@ -10,11 +19,12 @@ var lay = #[
     2, 2, 3,
     4, 5, 3,
 ]
-
 var rs = layout_to_rects(lay, WH[3,4], Rect [XY[0,0],pm_get_size_internal()])
+;;;
+;;;
 
-;;pm_set_color_clear(Color [255,255,255,255])
+pm_set_color_clear(Color [0,0,0,255])
 pm_output_clear()
-layout_draw(\rs, WH[3,4])
+layout_draw(\rs, Color [255,255,255,255])
 pm_output_present()
 pm_input_event(`SDL_MOUSEBUTTONDOWN`)
