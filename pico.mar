@@ -96,8 +96,12 @@ func pm_set_style: (style: `Pico_Style`) -> () {
     `pico_set_style(style)`
 }
 
-func pm_set_title: (title: \Char) -> () {
+func pm_set_title_c: (title: \Char) -> () {
     `pico_set_title(title)`
+}
+
+func pm_set_title: (title: \#[Char]) -> () {
+    pm_set_title_ptr(string_to_c(title))
 }
 
 ;; INPUT
