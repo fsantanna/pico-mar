@@ -19,7 +19,8 @@ var lay = #[
     2, 2, 3,
     4, 5, 3,
 ]
-var rs = layout_to_rects(lay, WH[3,4], Rect [XY[0,0],pm_get_size_internal()])
+var rs: #[Rect*15]
+layout_to_rects(\rs, lay, WH[3,4], Rect [XY[0,0],pm_get_size_internal()])
 ;;;
 ;;;
 

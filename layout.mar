@@ -1,8 +1,8 @@
 ^include(@/pico/pico.mar)
 
-func layout_to_rects: (lay: #[15*Int], dim: WH, parent: Rect) -> #[15*Rect] {
-    ensure((dim.w*dim.h) <= 15)
-    var rs1: #[15*Rect]
+func layout_to_rects: (rs: \#[Rect], lay: #[Int*15], dim: WH, parent: Rect) -> () {
+    expect((dim.w*dim.h) <= 15)
+    var rs1: #[Rect*15]
     set #rs1 = 0
     do {
         loop l in dim.h {
@@ -28,22 +28,20 @@ func layout_to_rects: (lay: #[15*Int], dim: WH, parent: Rect) -> #[15*Rect] {
     print("rs1")
     print(rs1)
 
-    var rs2: #[15*Rect]
     do {
-        set #rs2 = 0
+        set #rs\ = 0
         var p = XY [parent.dim.w/dim.w, parent.dim.h/dim.h]
         loop i in #rs1 {
             var r = rs1[i]
-            set rs2[#rs2] = Rect [XY[x,y], WH[w,h]] where {
+            set rs\[#rs\] = Rect [XY[x,y], WH[w,h]] where {
                 w = r.dim.w * p.x
                 h = r.dim.h * p.y
                 x = parent.pos.x + (r.pos.x * p.x) + (w/2)
                 y = parent.pos.y + (r.pos.y * p.y) + (h/2)
             }
-            set #rs2 = #rs2 + 1
+            set #rs\ = #rs\ + 1
         }
     }
-    return(rs2)
 }
 
 func layout_draw: (rs: \#[Rect], clr: Color) -> () {
@@ -61,15 +59,16 @@ test {
         var lay = #[
             0, 1,
         ]
-        var rs = layout_to_rects(lay, WH[2,1], Rect[XY[0,0],WH[200,100]])
+        var rs: #[Rect*15]
+        layout_to_rects(\rs, lay, WH[2,1], Rect[XY[0,0],WH[200,100]])
         print(rs)
         print("-=-=-")
         loop i in 2 {
             print(rs[i])
         }
-        ensure(false)
+        expect(false)
 ;;;
-        ensure(rs == #[
+        expect(rs == #[
             Rect [XY[0.5,0.5], WH[1,1]],
             Rect [XY[1.5,0.5], WH[1,1]],
         ])
@@ -83,10 +82,11 @@ test {
             2, 2, 3,
             4, 5, 3,
         ]
-        var rs = layout_to_rects(lay, WH[3,4], Rect[XY[0,0],WH[3,4]])
+        var rs: #[Rect*15]
+        layout_to_rects(\rs, lay, WH[3,4], Rect[XY[0,0],WH[3,4]])
         print(rs)
 ;;;
-        ensure(rs == #[
+        expect(rs == #[
             Rect [XY[1.0,1.0], WH[2,2]],
             Rect [XY[2.5,1.0], WH[1,2]],
             Rect [XY[1.0,2.5], WH[2,1]],
