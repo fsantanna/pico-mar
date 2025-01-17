@@ -1,22 +1,29 @@
 ^include(@/pico/pico.mar)
 
-func layout_to_rects: (rs: \#[Rect], lay: #[Int*15], dim: WH, parent: Rect) -> () {
-    expect((dim.w*dim.h) <= 15)
-    var rs1: #[Rect*15]
+func {dim:WH} f: (lay: \#[Int*{dim.w*dim.h}], parent: Rect) -> #[Rect*{dim.w*dim.h}]
+
+meta {n:Int} {
+    func {n:Int} f: (lay: \#[Int*{n}], parent: Rect) -> #[Rect*{dim.h*dim.h}]
+}
+
+f{}()
+
+func layout_to_rects: (rs: \#[Rect], lay: \#[Int], dim: WH, parent: Rect) -> () {
+    var rs1: #[Rect*(dim.w*dim.h)]
     set #rs1 = 0
     do {
         loop l in dim.h {
             loop c in dim.w {
-                if lay[(l*dim.w)+c] == #rs1 {
+                if lay\[(l*dim.w)+c] == #rs1 {
                     var r = Rect [XY[c,l], WH[0,0]]
                     loop xc in (dim.w-c) {
                         var xxc = xc + c
-                        until(lay[(l*dim.w)+xxc] != #rs1)
+                        until(lay\[(l*dim.w)+xxc] != #rs1)
                         set r.dim.w = (xxc - c) + 1
                     }
                     loop xl in (dim.h-l) {
                         var xxl = xl + l
-                        until(lay[(xxl*dim.w)+c] != #rs1)
+                        until(lay\[(xxl*dim.w)+c] != #rs1)
                         set r.dim.h = (xxl - l) + 1
                     }
                     set rs1[#rs1] = r
@@ -59,8 +66,8 @@ test {
         var lay = #[
             0, 1,
         ]
-        var rs: #[Rect*15]
-        layout_to_rects(\rs, lay, WH[2,1], Rect[XY[0,0],WH[200,100]])
+        var rs: #[Rect*(2*1)]
+        layout_to_rects(\rs, \lay, WH[2,1], Rect[XY[0,0],WH[200,100]])
         print(rs)
         print("-=-=-")
         loop i in 2 {
@@ -82,8 +89,8 @@ test {
             2, 2, 3,
             4, 5, 3,
         ]
-        var rs: #[Rect*15]
-        layout_to_rects(\rs, lay, WH[3,4], Rect[XY[0,0],WH[3,4]])
+        var rs: #[Rect*(3*4)]
+        layout_to_rects(\rs, \lay, WH[3,4], Rect[XY[0,0],WH[3,4]])
         print(rs)
 ;;;
         expect(rs == #[
