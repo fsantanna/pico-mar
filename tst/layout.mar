@@ -1,8 +1,8 @@
 ^include(@/pico/layout.mar)
 
-;;;
 var lay = #[0,1]
 var rs = layout_to_rects(lay, WH[2,1], Rect [XY[0,0],pm_get_size_internal()])
+;;;
 ;;;
 
 ;;;
@@ -13,6 +13,7 @@ var lay = #[
 var rs = layout_to_rects(lay, WH[3,2], Rect [XY[0,0],pm_get_size_internal()])
 ;;;
 
+;;;
 var lay = #[
     0, 0, 1,
     0, 0, 1,
@@ -21,7 +22,6 @@ var lay = #[
 ]
 var rs: #[Rect*15]
 layout_to_rects(\rs, \lay, WH[3,4], Rect [XY[0,0],pm_get_size_internal()])
-;;;
 ;;;
 
 pm_set_color_clear(Color [0,0,0,255])

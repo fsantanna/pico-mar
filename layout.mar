@@ -1,54 +1,46 @@
 ^include(@/pico/pico.mar)
 
-func {dim:WH} f: (lay: \#[Int*{dim.w*dim.h}], parent: Rect) -> #[Rect*{dim.w*dim.h}]
-
-meta {n:Int} {
-    func {n:Int} f: (lay: \#[Int*{n}], parent: Rect) -> #[Rect*{dim.h*dim.h}]
-}
-
-f{}()
-
-func layout_to_rects: (rs: \#[Rect], lay: \#[Int], dim: WH, parent: Rect) -> () {
-    var rs1: #[Rect*(dim.w*dim.h)]
-    set #rs1 = 0
+func layout_to_rects {{w:Int,h:Int}}: (lay: #[Int*{{w}}*{{h}}], parent: Rect) -> #[Rect*({{w}}*{{h}})] {
+    var tmp: #[Rect*({{w}}*{{h}})]
+    set #tmp = 0
     do {
-        loop l in dim.h {
-            loop c in dim.w {
-                if lay\[(l*dim.w)+c] == #rs1 {
+        loop l in {{h}} {
+            loop c in {{w}} {
+                if lay[(l*{{w}})+c] == #tmp {
                     var r = Rect [XY[c,l], WH[0,0]]
-                    loop xc in (dim.w-c) {
+                    loop xc in ({{w}}-c) {
                         var xxc = xc + c
-                        until(lay\[(l*dim.w)+xxc] != #rs1)
+                        until(lay[(l*{{w}})+xxc] != #tmp)
                         set r.dim.w = (xxc - c) + 1
                     }
-                    loop xl in (dim.h-l) {
+                    loop xl in ({{h}}-l) {
                         var xxl = xl + l
-                        until(lay\[(xxl*dim.w)+c] != #rs1)
+                        until(lay[(xxl*{{w}})+c] != #tmp)
                         set r.dim.h = (xxl - l) + 1
                     }
-                    set rs1[#rs1] = r
-                    set #rs1 = #rs1 + 1
+                    set tmp[#tmp] = r
+                    set #tmp = #tmp + 1
                 }
             }
         }
     }
-    print("rs1")
-    print(rs1)
 
+    var ret: #[Rect*({{w}}*{{h}})]
+    set #ret = 0
     do {
-        set #rs\ = 0
-        var p = XY [parent.dim.w/dim.w, parent.dim.h/dim.h]
-        loop i in #rs1 {
-            var r = rs1[i]
-            set rs\[#rs\] = Rect [XY[x,y], WH[w,h]] where {
+        var p = XY [parent.dim.w/{{w}}, parent.dim.h/{{h}}]
+        loop i in #tmp {
+            var r = tmp[i]
+            set ret[#ret] = Rect [XY[x,y], WH[w,h]] where {
                 w = r.dim.w * p.x
                 h = r.dim.h * p.y
                 x = parent.pos.x + (r.pos.x * p.x) + (w/2)
                 y = parent.pos.y + (r.pos.y * p.y) + (h/2)
             }
-            set #rs\ = #rs\ + 1
+            set #ret = #ret + 1
         }
     }
+    return(ret)
 }
 
 func layout_draw: (rs: \#[Rect], clr: Color) -> () {
@@ -66,20 +58,11 @@ test {
         var lay = #[
             0, 1,
         ]
-        var rs: #[Rect*(2*1)]
-        layout_to_rects(\rs, \lay, WH[2,1], Rect[XY[0,0],WH[200,100]])
-        print(rs)
-        print("-=-=-")
-        loop i in 2 {
-            print(rs[i])
-        }
-        expect(false)
-;;;
+        var rs = layout_to_rects {{2,1}} (lay, Rect[XY[0,0],WH[200,100]])
         expect(rs == #[
-            Rect [XY[0.5,0.5], WH[1,1]],
-            Rect [XY[1.5,0.5], WH[1,1]],
+            Rect [XY[ 50,50], WH[100,100]],
+            Rect [XY[150,50], WH[100,100]],
         ])
-;;;
     }
     do {
         print("= 2 =")
@@ -89,18 +72,14 @@ test {
             2, 2, 3,
             4, 5, 3,
         ]
-        var rs: #[Rect*(3*4)]
-        layout_to_rects(\rs, \lay, WH[3,4], Rect[XY[0,0],WH[3,4]])
-        print(rs)
-;;;
+        var rs = layout_to_rects {{3,4}} (lay, Rect[XY[0,0],WH[300,400]])
         expect(rs == #[
-            Rect [XY[1.0,1.0], WH[2,2]],
-            Rect [XY[2.5,1.0], WH[1,2]],
-            Rect [XY[1.0,2.5], WH[2,1]],
-            Rect [XY[2.5,3.0], WH[1,2]],
-            Rect [XY[0.5,3.5], WH[1,1]],
-            Rect [XY[1.5,3.5], WH[1,1]]
+            Rect [XY[100,100], WH[200,200]],
+            Rect [XY[250,100], WH[100,200]],
+            Rect [XY[100,250], WH[200,100]],
+            Rect [XY[250,300], WH[100,200]],
+            Rect [XY[ 50,350], WH[100,100]],
+            Rect [XY[150,350], WH[100,100]]
         ])
-;;;
     }
 }
