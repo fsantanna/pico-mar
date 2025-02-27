@@ -7,7 +7,7 @@ pm_set_title("pico-mar")
 pm_output_sound("start.wav")
 
 ;; GET-SIZE
-var log = pm_get_size_internal()
+var log = pm_get_size().log()
 print(log)
 
 var cnt = pm_pct_to_pos(1.0/2,1.0/2)

@@ -2,7 +2,7 @@
 
 ;;;
 var lay = #[0,1]
-var rs = layout_to_rects {{2,1}} (lay, Rect [XY[0,0],pm_get_size_internal()])
+var rs = layout_to_rects {{2,1}} (lay, Rect [XY[0,0],pm_get_size().log)])
 ;;;
 
 ;;;
@@ -10,7 +10,7 @@ var lay = #[
     0, 0, 1,
     0, 0, 1,
 ]
-var rs = layout_to_rects {{3,2}} (lay, Rect [XY[0,0],pm_get_size_internal()])
+var rs = layout_to_rects {{3,2}} (lay, Rect [XY[0,0],pm_get_size().log)])
 ;;;
 
 var lay = #[
@@ -19,7 +19,7 @@ var lay = #[
     2, 2, 3,
     4, 5, 3,
 ]
-var rs = layout_to_rects {{3,4}} (lay, Rect [XY[0,0],pm_get_size_internal()])
+var rs = layout_to_rects {{3,4}} (lay, Rect [XY[0,0],pm_get_size().log])
 ;;;
 ;;;
 

@@ -34,12 +34,11 @@ data PM.*: [] {
 
 ;; GET
 
-func pm_get_size: () -> WH {
-    return(`pico_get_size()`)
-}
-
-func pm_get_size_internal: () -> WH {
-    return(`pico_get_size_internal()`)
+func pm_get_size: () -> [log:WH, phy:WH] {
+    return ([
+        `pico_get_size_internal()`,
+        `pico_get_size_external()`,
+    ])
 }
 
 ;; SET
