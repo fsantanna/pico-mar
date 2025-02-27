@@ -1,13 +1,13 @@
 ^include(@/pico/pico.mar)
 
 ;; TITLE
-pm_set_title("pico-mar")
+;;pm_set_title("pico-mar")
 
 ;; SOUND
-pm_output_sound("start.wav")
+;;pm_output_sound("start.wav")
 
 ;; GET-SIZE
-var log = pm_get_size().log()
+var log = pm_get_size().log
 print(log)
 
 var cnt = pm_pct_to_pos(1.0/2,1.0/2)
@@ -104,27 +104,29 @@ pm_input_delay(2000)
 
 ;; SET-ZOOM
 
-pm_set_size_internal(WH [log.w*0.9,log.h*0.9])
+var phy = pm_get_size().phy
+
+pm_set_size(phy, WH [log.w*0.9,log.h*0.9])
 pm_output_draw_pixel(pm_pct_to_pos(1.0/2,1.0/2))
 pm_output_present()
 pm_input_delay(500)
 
-pm_set_size_internal(WH [log.w*0.8,log.h*0.8])
+pm_set_size(phy, WH [log.w*0.8,log.h*0.8])
 pm_output_draw_pixel(pm_pct_to_pos(1.0/2,1.0/2))
 pm_output_present()
 pm_input_delay(500)
 
-pm_set_size_internal(WH [log.w*0.7,log.h*0.7])
+pm_set_size(phy, WH [log.w*0.7,log.h*0.7])
 pm_output_draw_pixel(pm_pct_to_pos(1.0/2,1.0/2))
 pm_output_present()
 pm_input_delay(500)
 
-pm_set_size_internal(WH [log.w*0.6,log.h*0.6])
+pm_set_size(phy, WH [log.w*0.6,log.h*0.6])
 pm_output_draw_pixel(pm_pct_to_pos(1.0/2,1.0/2))
 pm_output_present()
 pm_input_delay(500)
 
-pm_set_size_internal(WH [log.w*0.5,log.h*0.5])
+pm_set_size(phy, WH [log.w*0.5,log.h*0.5])
 pm_output_draw_pixel(pm_pct_to_pos(1.0/2,1.0/2))
 pm_output_present()
 pm_input_delay(500)
@@ -160,7 +162,7 @@ pm_input_delay(500)
 
 pm_input_delay(2000)
 
-pm_set_size_internal(WH [64,36])
+pm_set_size(phy, WH [64,36])
 pm_output_draw_pixel(pm_pct_to_pos(1.0/2,1.0/2))
 pm_output_present()
 

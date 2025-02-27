@@ -34,11 +34,9 @@ data PM.*: [] {
 
 ;; GET
 
-func pm_get_size: () -> [log:WH, phy:WH] {
-    return ([
-        `pico_get_size_internal()`,
-        `pico_get_size_external()`,
-    ])
+func pm_get_size: () -> [phy:WH, log:WH] {
+    `Pico_Size sz = pico_get_size();`
+    return ([`sz.phy`, `sz.log`])
 }
 
 ;; SET
@@ -79,16 +77,8 @@ func pm_set_pan: (pos: XY) -> () {
     `pico_set_pan(CAST(SDL_Point,pos))`
 }
 
-func pm_set_size: (size: WH) -> () {
-    `pico_set_size(CAST(SDL_Point,size))`
-}
-
-func pm_set_size_external: (phy: WH) -> () {
-    `pico_set_size_external(CAST(SDL_Point,phy))`
-}
-
-func pm_set_size_internal: (log: WH) -> () {
-    `pico_set_size_internal(CAST(SDL_Point,log))`
+func pm_set_size: (phy: WH, log: WH) -> () {
+    `pico_set_size(CAST(SDL_Point,phy), CAST(SDL_Point,log))`
 }
 
 func pm_set_style: (style: `Pico_Style`) -> () {

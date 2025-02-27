@@ -1,8 +1,7 @@
 ^include(@/pico/pico.mar)
 
 pm_set_title("pico-Mar: Parallel Across")
-pm_set_size_external(WH [200,200])
-pm_set_size_internal(WH [20,20])
+pm_set_size(WH [200,200], WH [20,20])
 
 coro co: (pos:XY, vel:XY) -> () -> () -> () {
     loop {
