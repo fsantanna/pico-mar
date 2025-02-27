@@ -52,7 +52,6 @@ func layout_draw: (rs: \#[Rect], clr: Color) -> () {
 }
 
 test {
-    pm_set_font("tiny.ttf", 10)
     do {
         print("= 1 =")
         var lay = #[
