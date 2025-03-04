@@ -7,16 +7,16 @@ func layout_to_rects {{w:Int,h:Int}}: (lay: #[Int*{{w}}*{{h}}], parent: Rect) ->
         loop l in {{h}} {
             loop c in {{w}} {
                 if lay[(l*{{w}})+c] == #tmp {
-                    var r = Rect [XY[c,l], WH[0,0]]
+                    var r = Rect [Pos[c,l], Dim[0,0]]
                     loop xc in ({{w}}-c) {
                         var xxc = xc + c
                         until(lay[(l*{{w}})+xxc] != #tmp)
-                        set r.dim.w = (xxc - c) + 1
+                        set r.dim.x = (xxc - c) + 1
                     }
                     loop xl in ({{h}}-l) {
                         var xxl = xl + l
                         until(lay[(xxl*{{w}})+c] != #tmp)
-                        set r.dim.h = (xxl - l) + 1
+                        set r.dim.y = (xxl - l) + 1
                     }
                     set tmp[#tmp] = r
                     set #tmp = #tmp + 1
@@ -28,12 +28,12 @@ func layout_to_rects {{w:Int,h:Int}}: (lay: #[Int*{{w}}*{{h}}], parent: Rect) ->
     var ret: #[Rect*({{w}}*{{h}})]
     set #ret = 0
     do {
-        var p = XY [parent.dim.w/{{w}}, parent.dim.h/{{h}}]
+        var p = Pos [parent.dim.x/{{w}}, parent.dim.y/{{h}}]
         loop i in #tmp {
             var r = tmp[i]
-            set ret[#ret] = Rect [XY[x,y], WH[w,h]] where {
-                w = r.dim.w * p.x
-                h = r.dim.h * p.y
+            set ret[#ret] = Rect [Pos[x,y], Dim[w,h]] where {
+                w = r.dim.x * p.x
+                h = r.dim.y * p.y
                 x = parent.pos.x + (r.pos.x * p.x) + (w/2)
                 y = parent.pos.y + (r.pos.y * p.y) + (h/2)
             }
@@ -43,12 +43,13 @@ func layout_to_rects {{w:Int,h:Int}}: (lay: #[Int*{{w}}*{{h}}], parent: Rect) ->
     return(ret)
 }
 
-func layout_draw: (rs: \#[Rect], clr: Color) -> () {
-    pm_set_color_draw(clr)
+func layout_draw: (rs: \#[Rect]) -> () {
+    var s = pm_get_style()
     pm_set_style(`PICO_STROKE`)
     loop i in #rs\ {
         pm_output_draw_rect(rs\[i])
     }
+    pm_set_style(s)
 }
 
 test {
@@ -57,10 +58,10 @@ test {
         var lay = #[
             0, 1,
         ]
-        var rs = layout_to_rects {{2,1}} (lay, Rect[XY[0,0],WH[200,100]])
+        var rs = layout_to_rects {{2,1}} (lay, Rect[Pos[0,0],Dim[200,100]])
         expect(rs == #[
-            Rect [XY[ 50,50], WH[100,100]],
-            Rect [XY[150,50], WH[100,100]],
+            Rect [Pos[ 50,50], Dim[100,100]],
+            Rect [Pos[150,50], Dim[100,100]],
         ])
     }
     do {
@@ -71,14 +72,14 @@ test {
             2, 2, 3,
             4, 5, 3,
         ]
-        var rs = layout_to_rects {{3,4}} (lay, Rect[XY[0,0],WH[300,400]])
+        var rs = layout_to_rects {{3,4}} (lay, Rect[Pos[0,0],Dim[300,400]])
         expect(rs == #[
-            Rect [XY[100,100], WH[200,200]],
-            Rect [XY[250,100], WH[100,200]],
-            Rect [XY[100,250], WH[200,100]],
-            Rect [XY[250,300], WH[100,200]],
-            Rect [XY[ 50,350], WH[100,100]],
-            Rect [XY[150,350], WH[100,100]]
+            Rect [Pos[100,100], Dim[200,200]],
+            Rect [Pos[250,100], Dim[100,200]],
+            Rect [Pos[100,250], Dim[200,100]],
+            Rect [Pos[250,300], Dim[100,200]],
+            Rect [Pos[ 50,350], Dim[100,100]],
+            Rect [Pos[150,350], Dim[100,100]]
         ])
     }
 }

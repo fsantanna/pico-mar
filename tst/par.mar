@@ -1,9 +1,9 @@
 ^include(@/pico/pico.mar)
 
-pm_set_title("pico-Mar: Parallel Across")
-pm_set_size(WH [200,200], WH [20,20])
+pm_set_title_c("pico-Mar: Parallel Across")
+pm_set_size(Dim [200,200], Dim [20,20])
 
-coro co: (pos:XY, vel:XY) -> () -> () -> () {
+coro co: (pos:Pos, vel:Pos) -> () -> () -> () {
     loop {
         pm_output_draw_pixel(pos)
         yield ()
@@ -14,11 +14,10 @@ coro co: (pos:XY, vel:XY) -> () -> () -> () {
 
 var x = create(co)
 var y = create(co)
-start x(pm_pct_to_pos(0,0), XY [1,1])
-start y(pm_pct_to_pos(0,1), XY [1,-1])
+start x(pm_pct_to_pos(0,0), Pos [1,1])
+start y(pm_pct_to_pos(0,100), Pos [1,-1])
 
 loop i in 20 {
-    pm_output_present()
     pm_input_delay(500)
     resume x()
     resume y()

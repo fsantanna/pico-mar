@@ -1,15 +1,15 @@
 ^include(@/pico/pico.mar)
 
-pm_set_title("pico-Mar: Moving Around")
+pm_set_title_c("pico-Mar: Moving Around")
 
-var pos = pm_pct_to_pos(0.5,0.5)
+var pos = pm_pct_to_pos(50,50)
 
 loop {
     pm_set_color_draw(Color [255,255,255,255])
     pm_output_draw_pixel(pos)
-    pm_output_present()
 
     var e: PM.Key.Dn = pm_input_event(`SDL_KEYDOWN`)!Key!Dn
+
     pm_set_color_draw(Color [0,0,0,255])
     pm_output_draw_pixel(pos)
 
