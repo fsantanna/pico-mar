@@ -9,6 +9,7 @@ loop {
     pm_output_draw_pixel(pos)
 
     var e: PM.Key.Dn = pm_input_event(`SDL_KEYDOWN`)!Key!Dn
+
     pm_set_color_draw(Color [0,0,0,255])
     pm_output_draw_pixel(pos)
 

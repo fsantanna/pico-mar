@@ -5,9 +5,9 @@ defer {
     `pico_init(0)`
 }
 
-data XY:      [x:Int, y:Int]
-data WH:      [w:Int, h:Int]
-data Rect:    [pos:XY, dim:WH]
+data Pos:     [x:Int, y:Int]
+data Dim:     [x:Int, y:Int]
+data Rect:    [pos:Pos, dim:Dim]
 data Color:   [r:U8, g:U8, b:U8, a:U8]
 data HAnchor: <Left:(),   Center:(), Right:()>
 data VAnchor: <Bottom:(), Middle:(), Top:()>
@@ -21,7 +21,7 @@ data PM.*: [] {
         Dn : []
         Up : []
     }
-    Mouse : [pos: XY] {
+    Mouse : [pos: Pos] {
         Motion : []
         Button : [but: Int] {
             Dn : []
@@ -34,9 +34,13 @@ data PM.*: [] {
 
 ;; GET
 
-func pm_get_size: () -> [phy:WH, log:WH] {
+func pm_get_size: () -> [phy:Dim, log:Dim] {
     `Pico_Size sz = pico_get_size();`
     return ([`sz.phy`, `sz.log`])
+}
+
+func pm_get_style: () -> `Pico_Style` {
+    return (`pico_get_style()`)
 }
 
 ;; SET
@@ -53,8 +57,8 @@ func pm_set_color_draw: (color: Color) -> () {
     `pico_set_color_draw(CAST(SDL_Color,color))`
 }
 
-func pm_set_cursor: (pos: XY) -> () {
-    `pico_set_cursor(CAST(SDL_Point,pos))`
+func pm_set_cursor: (pos: Pos) -> () {
+    `pico_set_cursor(CAST(Pico_Pos,pos))`
 }
 
 func pm_set_font: (file: \Char, h: Int) -> () {
@@ -69,15 +73,15 @@ func pm_set_image_crop: (crop: Rect) -> () {
     `pico_set_image_crop(CAST(SDL_Rect,crop))`
 }
 
-func pm_set_image_size: (size: WH) -> () {
+func pm_set_image_size: (size: Dim) -> () {
     `pico_set_image_size(CAST(SDL_Point,size))`
 }
 
-func pm_set_scroll: (pos: XY) -> () {
-    `pico_set_scroll(CAST(SDL_Point,pos))`
+func pm_set_scroll: (pos: Pos) -> () {
+    `pico_set_scroll(CAST(Pico_Pos,pos))`
 }
 
-func pm_set_size: (phy: WH, log: WH) -> () {
+func pm_set_size: (phy: Dim, log: Dim) -> () {
     `pico_set_size(CAST(SDL_Point,phy), CAST(SDL_Point,log))`
 }
 
@@ -93,6 +97,10 @@ func pm_set_title: (title: \#[Char]) -> () {
     pm_set_title_c(string_to_c(title))
 }
 
+func pm_set_zoom: (zoom: Dim) -> () {
+    `pico_set_zoom(CAST(Pico_Dim,zoom))`
+}
+
 ;; INPUT
 
 func pm_input_sdl_to_mar: (sdl: `SDL_Event*`) -> PM {
@@ -101,16 +109,16 @@ func pm_input_sdl_to_mar: (sdl: `SDL_Event*`) -> PM {
             PM.Quit []
         `SDL_MOUSEMOTION` =>
             PM.Mouse.Motion [
-                XY [`sdl->motion.x`, `sdl->motion.y`]
+                Pos [`sdl->motion.x`, `sdl->motion.y`]
             ]
         `SDL_MOUSEBUTTONDOWN` =>
             PM.Mouse.Button.Dn [
-                XY [`sdl->button.x`, `sdl->button.y`],
+                Pos [`sdl->button.x`, `sdl->button.y`],
                 `sdl->button.button`
             ]
         `SDL_MOUSEBUTTONUP` =>
             PM.Mouse.Button.Up [
-                XY [`sdl->button.x`, `sdl->button.y`],
+                Pos [`sdl->button.x`, `sdl->button.y`],
                 `sdl->button.button`
             ]
         `SDL_KEYDOWN` =>
@@ -140,28 +148,28 @@ func pm_output_clear: () -> () {
     `pico_output_clear()`
 }
 
-func pm_output_draw_image: (pos: XY, path: \Char) -> () {
-    `pico_output_draw_image(CAST(SDL_Point,pos), path)`
+func pm_output_draw_image: (pos: Pos, path: \Char) -> () {
+    `pico_output_draw_image(CAST(Pico_Pos,pos), path)`
 }
 
-func pm_output_draw_line: (p1: XY, p2: XY) -> () {
-    `pico_output_draw_line(CAST(SDL_Point,p1), CAST(SDL_Point,p2))`
+func pm_output_draw_line: (p1: Pos, p2: Pos) -> () {
+    `pico_output_draw_line(CAST(Pico_Pos,p1), CAST(Pico_Pos,p2))`
 }
 
 func pm_output_draw_oval: (rect: Rect) -> () {
     `pico_output_draw_oval(CAST(SDL_Rect,rect))`
 }
 
-func pm_output_draw_pixel: (pos: XY) -> () {
-    `pico_output_draw_pixel(CAST(SDL_Point,pos))`
+func pm_output_draw_pixel: (pos: Pos) -> () {
+    `pico_output_draw_pixel(CAST(Pico_Pos,pos))`
 }
 
 func pm_output_draw_rect: (rect: Rect) -> () {
     `pico_output_draw_rect(CAST(SDL_Rect,rect))`
 }
 
-func pm_output_draw_text: (pos: XY, text: \Char) -> () {
-    `pico_output_draw_text(CAST(SDL_Point,pos), text)`
+func pm_output_draw_text: (pos: Pos, text: \Char) -> () {
+    `pico_output_draw_text(CAST(Pico_Pos,pos), text)`
 }
 
 func pm_output_present: () -> () {
@@ -182,6 +190,6 @@ func pm_output_writeln: (text: \Char) -> () {
 
 ;; AUX
 
-func pm_pct_to_pos: (x: Float, y: Float) -> XY {
+func pm_pct_to_pos: (x: Int, y: Int) -> Pos {
     return(`pico_pct_to_pos(x,y)`)
 }

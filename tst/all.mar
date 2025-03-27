@@ -27,8 +27,8 @@ pm_input_delay(2000)
 
 ;; CROP-IMAGE
 pm_output_clear()
-pm_set_image_crop(Rect [XY[0,0], WH[24,24]])
-pm_set_image_size(WH [24,24])
+pm_set_image_crop(Rect [Pos[0,0], Dim[24,24]])
+pm_set_image_size(Dim [24,24])
 pm_output_draw_image(cnt, "open.png")
 
 pm_input_delay(2000)
@@ -42,6 +42,7 @@ pm_output_draw_pixel(cnt)
 pm_input_delay(2000)
 
 ;; DRAW-TEXT
+pm_output_clear();
 pm_set_font(null, 10)
 pm_output_draw_text(cnt, "Hello!")
 
@@ -72,7 +73,7 @@ pm_input_delay(2000)
 
 ;; MOUSE
 var e: PM.Mouse.Button = pm_input_event(`SDL_MOUSEBUTTONDOWN`)!Mouse!Button
-pm_output_draw_pixel(XY [e.pos.x,e.pos.y])
+pm_output_draw_pixel(Pos [e.pos.x,e.pos.y])
 
 pm_input_delay(2000)
 
@@ -81,83 +82,83 @@ pm_output_clear()
 pm_set_grid(true)
 
 ;; DRAW-LINE
+pm_output_clear();
 pm_output_draw_line(pm_pct_to_pos(0,100), pm_pct_to_pos(100,0))
 pm_output_draw_line(pm_pct_to_pos(0,0), pm_pct_to_pos(100,100))
+pm_input_delay(500)
 
 ;; DRAW-RECT
-pm_output_draw_rect(Rect [cnt, WH [21,21]])
+pm_output_draw_rect(Rect [cnt, Dim [21,21]])
+pm_input_delay(500)
 
 ;; DRAW-OVAL
-pm_output_draw_oval(Rect [pm_pct_to_pos(66,50), WH [6,6]])
+pm_output_draw_oval(Rect [pm_pct_to_pos(66,50), Dim [6,6]])
+pm_input_delay(500)
 
 ;; SET-ANCHOR
 pm_set_anchor(HAnchor.Right(), VAnchor.Top())
-pm_output_draw_rect(Rect [pm_pct_to_pos(100,0), WH [5,5]])
+pm_output_draw_rect(Rect [pm_pct_to_pos(100,0), Dim [5,5]])
+pm_input_delay(500)
 
 pm_input_delay(2000)
 
 ;; SET-ZOOM
 
-var phy = pm_get_size().phy
-
-pm_output_clear()
-pm_set_size(phy, WH [log.w*0.9,log.h*0.9])
-pm_output_draw_pixel(pm_pct_to_pos(50,50))
+pm_output_clear();
+pm_output_draw_pixel(cnt)
 pm_input_delay(500)
 
-pm_output_clear()
-pm_set_size(phy, WH [log.w*0.8,log.h*0.8])
-pm_output_draw_pixel(pm_pct_to_pos(50,50))
+pm_output_clear();
+pm_set_zoom(Dim [110,110])
+pm_output_draw_pixel(cnt)
 pm_input_delay(500)
 
-pm_output_clear()
-pm_set_size(phy, WH [log.w*0.7,log.h*0.7])
-pm_output_draw_pixel(pm_pct_to_pos(50,50))
+pm_output_clear();
+pm_set_zoom(Dim [80,80])
+pm_output_draw_pixel(cnt)
 pm_input_delay(500)
 
-pm_output_clear()
-pm_set_size(phy, WH [log.w*0.6,log.h*0.6])
-pm_output_draw_pixel(pm_pct_to_pos(50,50))
+pm_output_clear();
+pm_set_zoom(Dim [70,70])
+pm_output_draw_pixel(cnt)
 pm_input_delay(500)
 
-pm_output_clear()
-pm_set_size(phy, WH [log.w*0.5,log.h*0.5])
-pm_output_draw_pixel(pm_pct_to_pos(50,50))
+pm_output_clear();
+pm_set_zoom(Dim [60,60])
+pm_output_draw_pixel(cnt)
+pm_input_delay(500)
+
+pm_output_clear();
+pm_set_zoom(Dim [50,50])
+pm_output_draw_pixel(cnt)
 pm_input_delay(500)
 
 ;; SET-PAN
 
-var pos = pm_pct_to_pos(50,50)
-
-pm_output_clear()
-pm_set_scroll(XY [0,0])
-pm_output_draw_pixel(pos)
+pm_output_clear();
+pm_set_scroll(Pos [0,0])
+pm_output_draw_pixel(cnt)
 pm_input_delay(500)
 
-pm_output_clear()
-pm_set_scroll(XY [5,5])
-pm_output_draw_pixel(pos)
+pm_output_clear();
+pm_set_scroll(Pos [5,5])
+pm_output_draw_pixel(cnt)
 pm_input_delay(500)
 
-pm_output_clear()
-pm_set_scroll(XY [10,10])
-pm_output_draw_pixel(pos)
+pm_output_clear();
+pm_set_scroll(Pos [-5,-5])
+pm_output_draw_pixel(cnt)
 pm_input_delay(500)
 
-pm_output_clear()
-pm_set_scroll(XY [5,5])
-pm_output_draw_pixel(pos)
-pm_input_delay(500)
-
-pm_output_clear()
-pm_set_scroll(XY [0,0])
-pm_output_draw_pixel(pos)
+pm_output_clear();
+pm_set_scroll(Pos [0,0])
+pm_output_draw_pixel(cnt)
 pm_input_delay(500)
 
 pm_input_delay(2000)
 
-pm_output_clear()
-pm_set_size(phy, WH [64,36])
+pm_output_clear();
+pm_set_size(`PICO_SIZE_KEEP`, Dim [64,36])
 pm_output_draw_pixel(pm_pct_to_pos(50,50))
 
 pm_input_delay(2000)
