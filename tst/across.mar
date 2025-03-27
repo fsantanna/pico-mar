@@ -1,6 +1,6 @@
 ^include(@/pico/pico.mar)
 
-pm_set_title("pico-Ceu: Across")
+pm_set_title_c("pico-Mar: Across")
 
 ;;;
 func dist (pt1:XY, pt2:XY) {
@@ -9,13 +9,12 @@ func dist (pt1:XY, pt2:XY) {
 ;;;
 
 var pt1: XY = pm_pct_to_pos(0,0)
-var pt2: XY = pm_pct_to_pos(1,1)
+var pt2: XY = pm_pct_to_pos(100,100)
 
 var dy: Float = (pt2.y - pt1.y) / (pt2.x - pt1.x)
 
 loop i in (pt2.x - pt1.x) {
     var ii = pt1.x + i
     pm_output_draw_pixel(XY [ii,ii*dy])
-    pm_output_present()
     pm_input_delay(100)
 }

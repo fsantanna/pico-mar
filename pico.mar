@@ -1,4 +1,4 @@
-^compile(-lSDL2 -lSDL2_gfx -lSDL2_image -lSDL2_ttf -lSDL2_mixer -include @/pico/sdl/src/hash.c -include @/pico/sdl/src/pico.c)
+^compile(-lSDL2 -lSDL2_gfx -lSDL2_image -lSDL2_ttf -lSDL2_mixer -include @/pico/sdl/src/pico.c -include @/pico/sdl/src/dir.c -include @/pico/sdl/src/hash.c)
 
 `pico_init(1)`
 defer {
@@ -73,8 +73,8 @@ func pm_set_image_size: (size: WH) -> () {
     `pico_set_image_size(CAST(SDL_Point,size))`
 }
 
-func pm_set_pan: (pos: XY) -> () {
-    `pico_set_pan(CAST(SDL_Point,pos))`
+func pm_set_scroll: (pos: XY) -> () {
+    `pico_set_scroll(CAST(SDL_Point,pos))`
 }
 
 func pm_set_size: (phy: WH, log: WH) -> () {
@@ -117,7 +117,7 @@ func pm_input_sdl_to_mar: (sdl: `SDL_Event*`) -> PM {
             PM.Key.Dn [`sdl->key.keysym.sym`]
         `SDL_KEYUP` =>
             PM.Key.Up [`sdl->key.keysym.sym`]
-        else => throw()
+        ;;else => expect(false)
     }
     return(ret)
 }
