@@ -1,5 +1,7 @@
 ^compile(-lSDL2 -lSDL2_gfx -lSDL2_image -lSDL2_ttf -lSDL2_mixer -include @/pico/sdl/src/pico.c -include @/pico/sdl/src/dir.c -include @/pico/sdl/src/hash.c)
 
+^include(@/math.mar)
+
 `pico_init(1)`
 defer {
     `pico_init(0)`
@@ -13,7 +15,7 @@ data HAnchor: <Left:(),   Center:(), Right:()>
 data VAnchor: <Bottom:(), Middle:(), Top:()>
 
 data PM.*: [] {
-    Any   : []
+    ;;Any   : []
     Quit  : []
     Frame : [ms: Int]
     Draw  : []
@@ -85,6 +87,10 @@ func pm_set_size: (phy: Dim, log: Dim) -> () {
     `pico_set_size(CAST(SDL_Point,phy), CAST(SDL_Point,log))`
 }
 
+func pm_set_show: (on: Bool) -> () {
+    `pico_set_show(on)`
+}
+
 func pm_set_style: (style: `Pico_Style`) -> () {
     `pico_set_style(style)`
 }
@@ -142,6 +148,15 @@ func pm_input_event: (type: Int) -> PM {
     return(pm_input_sdl_to_mar(`&sdl`));
 }
 
+func pm_input_event_timeout: (type: Int, ms: Int) -> <Pm:PM,To:()> {
+    var has: Bool
+    ```
+    SDL_Event sdl;
+    has = pico_input_event_timeout(&sdl, type, ms);
+    ```
+    return(if has => <.Pm=pm_input_sdl_to_mar(`&sdl`)> => <.To=()>)
+}
+
 ;; OUTPUT
 
 func pm_output_clear: () -> () {
@@ -192,4 +207,51 @@ func pm_output_writeln: (text: \Char) -> () {
 
 func pm_pct_to_pos: (x: Int, y: Int) -> Pos {
     return(`pico_pct_to_pos(x,y)`)
+}
+
+func pm_quit: () -> () {
+    ```
+    SDL_Event e = { SDL_QUIT };
+    assert(1 == SDL_PushEvent(&e));
+    ```
+}
+
+func pm_loop: () -> () {
+    var mpf = 40
+    `pico_set_expert(1)`
+    var old: U32 = `pico_get_ticks()`
+    ;;data CPU: [cycs, sum, prv]
+    ;;var cpu :CPU = [0, 0, nil]
+    loop {
+        var now: U32  = `pico_get_ticks()`
+        var togo = mpf - (now - old)
+        if togo <= 0 {
+            emit(PM.Frame [mpf])
+            emit(Event.Clock [mpf])
+            pm_output_clear()
+            emit(PM.Draw [])
+            pm_output_present()
+            set old = togo + now
+        }
+
+        ;;;
+        do {
+            set cpu.cycs = cpu.cycs + 1
+            if cpu.cycs > (1000/mpf) {
+                set x-v.CPU = cpu.sum / 10
+                set cpu.cycs = 0
+                set cpu.sum  = 0
+            }
+            var t = x-get.ticks()
+            set cpu.sum = cpu.sum + (t - (cpu.prv or t))
+        }
+        ;;;
+
+        var e = pm_input_event_timeout(`SDL_ANY`, math_max(0,togo))
+        ;;set cpu.prv = x-get.ticks()
+        if (e?Pm) {
+            ;;until (e!Pm?PM.Quit)
+            emit(e!Pm)
+        }
+    }
 }
