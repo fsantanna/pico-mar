@@ -11,11 +11,9 @@ spawn {
             print(["I counted ", n])    ;; invariably outputs 9
         }
         every %1000 {
-print("x")
             set n = n + 1
         }
     }
-print("xxxx")
     pm_quit()
 }
 

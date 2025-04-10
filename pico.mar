@@ -250,7 +250,7 @@ func pm_loop: () -> () {
         var e = pm_input_event_timeout(`SDL_ANY`, math_max(0,togo))
         ;;set cpu.prv = x-get.ticks()
         if (e?Pm) {
-            ;;until (e!Pm?PM.Quit)
+            until (e!Pm?Quit)
             emit(e!Pm)
         }
     }
